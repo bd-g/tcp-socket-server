@@ -61,7 +61,7 @@
             this.button1.Location = new System.Drawing.Point(141, 130);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 23);
-            this.button1.TabIndex = 2;
+            this.button1.TabIndex = 6;
             this.button1.Text = "Send";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -80,7 +80,7 @@
             this.textBox2.Location = new System.Drawing.Point(141, 57);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 4;
+            this.textBox2.TabIndex = 2;
             // 
             // textBox3
             // 
@@ -89,7 +89,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBox3.Size = new System.Drawing.Size(233, 180);
-            this.textBox3.TabIndex = 5;
+            this.textBox3.TabIndex = 8;
             // 
             // label3
             // 
@@ -105,7 +105,7 @@
             this.textBox4.Location = new System.Drawing.Point(141, 83);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(100, 20);
-            this.textBox4.TabIndex = 8;
+            this.textBox4.TabIndex = 4;
             // 
             // label4
             // 

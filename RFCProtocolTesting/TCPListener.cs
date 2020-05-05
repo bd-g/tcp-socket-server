@@ -94,7 +94,7 @@ namespace RFCProtocolTesting
                 new AsyncCallback(ReadCallback), state);
         }
 
-        public static void ReadCallback(IAsyncResult ar)
+        public static async void ReadCallback(IAsyncResult ar)
         {
             String content = String.Empty;
 
@@ -109,25 +109,17 @@ namespace RFCProtocolTesting
 
 
             if (bytesRead > 0)
-            {
-                // There  might be more data, so store the data received so far.  
+            { 
                 state.sb.Append(Encoding.ASCII.GetString(
                     state.buffer, 0, bytesRead));
 
-                // Check for end-of-file tag. If it is not there, read
-                // more data.  
                 content = state.sb.ToString();
-                //if (content.IndexOf("<EOF>") > -1)
-                //{
                 string body = new HttpParser().getBody(content);
                 byte[] response = ResponseManager.Instance.getResponse(body);
+                
                 Send(handler, response);
-                //}
-                //else
-                //{
-                //    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                //    new AsyncCallback(ReadCallback), state);
-                //}
+
+                await LogManager.Instance.logMessage(body);
             }
         }
 

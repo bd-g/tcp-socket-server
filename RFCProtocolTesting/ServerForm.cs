@@ -70,6 +70,7 @@ namespace RFCProtocolTesting
                 else
                 {
                     MessageBox.Show("Enter a valid port number");
+                    button1.Enabled = false;
                 }
             }
         }
@@ -150,6 +151,11 @@ namespace RFCProtocolTesting
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
             ResponseManager.Instance.staticResponse = ((TextBox)sender).Text;
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            LogManager.Instance.writeToLogFile = ((CheckBox)sender).Checked;
         }
     }
 }
