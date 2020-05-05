@@ -17,6 +17,7 @@ namespace RFCProtocolTesting
         private static bool dataReady = false;
         private Socket listener;
         private static string connection = "";
+        private readonly object dataLock = new object();
 
         public TCPListener() { }
 
@@ -62,9 +63,13 @@ namespace RFCProtocolTesting
                 }
                 if (listening)
                 {
-                    while (!dataReady) { }
-                    yield return connection;
-                    dataReady = false;
+                    lock (dataLock)
+                    {
+                        while (!dataReady) { }
+                        yield return connection;
+                        dataReady = false;
+                    }
+                    
                 }
             }
             listening = false;

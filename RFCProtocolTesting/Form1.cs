@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,12 +22,14 @@ namespace RFCProtocolTesting
     {
         private bool isListening;
         private TCPListener tCPListener;
+        private ConnectionCounter connectionCounter;
 
         public Form1()
         {
             InitializeComponent();
             isListening = false;
             textBox1.KeyPress += new KeyPressEventHandler(textBox1_KeyPress);
+            connectionCounter = new ConnectionCounter();
 
             backgroundWorker1.WorkerReportsProgress = true;
             backgroundWorker1.WorkerSupportsCancellation = true;
@@ -49,6 +52,11 @@ namespace RFCProtocolTesting
                 button1.Text = "Listen";
                 isListening = !isListening;
                 button1.Enabled = true;
+                lock (connectionCounter)
+                {
+                    int oldValue = connectionCounter.ResetCurrentCounter();
+                    label6.Text = "0";
+                }
             }
             else
             {
@@ -104,6 +112,12 @@ namespace RFCProtocolTesting
             else
             {
                 textBox2.Text = e.UserState.ToString();
+                lock(connectionCounter)
+                {
+                    label5.Text = connectionCounter.IncrementTotalCounter().ToString();
+                    label6.Text = connectionCounter.IncrementCurrentCounter().ToString();
+                }
+                
             }
         }
 

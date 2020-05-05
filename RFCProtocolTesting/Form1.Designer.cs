@@ -40,6 +40,10 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -155,11 +159,51 @@
             this.label3.TabIndex = 10;
             this.label3.Text = "Static Response";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(313, 121);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(113, 26);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "Number of total\r\naccepted connections";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(428, 121);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(13, 13);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "0";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(428, 155);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(13, 13);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "0";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(313, 155);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(107, 39);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "Number of accepted \r\nconnections for this \r\nsession\r\n";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(600, 366);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.groupBox1);
@@ -192,6 +236,10 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
     }
 }
 
