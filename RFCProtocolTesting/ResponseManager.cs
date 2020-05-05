@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,18 +16,35 @@ namespace RFCProtocolTesting
         public ResponseSetting responseSetting = ResponseSetting.Echo;
         public string staticResponse = "";
 
-        public string getResponse(string body)
+        public byte[] getResponse(string body)
         {
+            byte[] byteData = new byte[0];
             switch (responseSetting)
             {
                 case ResponseSetting.Echo:
-                    return body;
+                    byteData = Encoding.ASCII.GetBytes(body);
+                    return byteData;
                 case ResponseSetting.Static:
-                    return staticResponse;
+                    byteData = Encoding.ASCII.GetBytes(staticResponse);
+                    return byteData;
                 case ResponseSetting.File:
-                    return "File return not implemented";
+                    if (File.Exists(body))
+                    {
+                        using (FileStream fs = new FileStream(body, FileMode.Open, FileAccess.Read))
+                        {
+                            byteData = System.IO.File.ReadAllBytes(body);
+                            fs.Read(byteData, 0, System.Convert.ToInt32(fs.Length));
+                            fs.Close();
+                            return byteData;
+                        }
+                    }
+                    else
+                    {
+                        byteData = Encoding.ASCII.GetBytes("File not found or invalid path");
+                        return byteData;
+                    }
                 default:
-                    return body;
+                    return byteData;
             }
         }
 

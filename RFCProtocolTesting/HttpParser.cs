@@ -24,14 +24,10 @@ namespace RFCProtocolTesting
             buffer = buffer.Slice(consumed);
             string body = Encoding.UTF8.GetString(buffer.ToArray());
 
-
-            //Dictionary<string, int> bodyObject = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, int>>(body);
-
             return body;
         }
         public void OnHeader(Span<byte> name, Span<byte> value)
         {
-            //Console.WriteLine($"{Encoding.UTF8.GetString(name)}: {Encoding.UTF8.GetString(value)}");
             Console.WriteLine("On header");
         }
 

@@ -82,6 +82,7 @@ namespace RFCProtocolTesting
             Socket listener = (Socket)ar.AsyncState;
             Socket handler = listener.EndAccept(ar);
 
+
             StateObject state = new StateObject();
             state.workSocket = handler;
             handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
@@ -109,18 +110,14 @@ namespace RFCProtocolTesting
                 string content = state.sb.ToString();
 
                 string body = new HttpParser().getBody(content);
-                string response = ResponseManager.Instance.getResponse(body);
+                byte[] response = ResponseManager.Instance.getResponse(body);
 
                 Send(handler, response);
             }
         }
 
-        private static void Send(Socket handler, String data)
+        private static void Send(Socket handler, byte[] byteData)
         {
-            // Convert the string data to byte data using ASCII encoding.  
-            byte[] byteData = Encoding.ASCII.GetBytes(data);
-
-            // Begin sending the data to the remote device.  
             handler.BeginSend(byteData, 0, byteData.Length, 0,
                 new AsyncCallback(SendCallback), handler);
         }
