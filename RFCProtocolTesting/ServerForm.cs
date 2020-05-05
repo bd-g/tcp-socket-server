@@ -18,17 +18,17 @@ namespace RFCProtocolTesting
         Static = 2, 
         File = 3
     }
-    public partial class Form1 : Form
+    public partial class ServerForm : Form
     {
         private bool isListening;
         private TCPListener tCPListener;
         private ConnectionCounter connectionCounter;
 
-        public Form1()
+        public ServerForm()
         {
             InitializeComponent();
             isListening = false;
-            textBox1.KeyPress += new KeyPressEventHandler(textBox1_KeyPress);
+            //textBox1.KeyPress += new KeyPressEventHandler(textBox1_KeyPress);
             connectionCounter = new ConnectionCounter();
 
             backgroundWorker1.WorkerReportsProgress = true;

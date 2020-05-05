@@ -38,7 +38,7 @@ namespace RFCProtocolTesting
             try
             {
                 listener.Bind(localEndPoint);
-                listener.Listen(10);
+                listener.Listen(100);
             }
             catch (Exception e)
             {
@@ -96,6 +96,8 @@ namespace RFCProtocolTesting
 
         public static void ReadCallback(IAsyncResult ar)
         {
+            String content = String.Empty;
+
             StateObject state = (StateObject)ar.AsyncState;
             Socket handler = state.workSocket;
 
@@ -105,19 +107,27 @@ namespace RFCProtocolTesting
 
             int bytesRead = handler.EndReceive(ar);
 
+
             if (bytesRead > 0)
             {
-                string fullContent = Encoding.ASCII.GetString(
-                    state.buffer, 0, bytesRead);
+                // There  might be more data, so store the data received so far.  
+                state.sb.Append(Encoding.ASCII.GetString(
+                    state.buffer, 0, bytesRead));
 
-                state.sb.Append(fullContent);
-
-                string content = state.sb.ToString();
-
+                // Check for end-of-file tag. If it is not there, read
+                // more data.  
+                content = state.sb.ToString();
+                //if (content.IndexOf("<EOF>") > -1)
+                //{
                 string body = new HttpParser().getBody(content);
                 byte[] response = ResponseManager.Instance.getResponse(body);
-
                 Send(handler, response);
+                //}
+                //else
+                //{
+                //    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                //    new AsyncCallback(ReadCallback), state);
+                //}
             }
         }
 

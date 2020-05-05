@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFCProtocolTesting", "RFCProtocolTesting\RFCProtocolTesting.csproj", "{081F7F0C-0C6E-40F1-AECC-B3D1423B9381}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFCClient", "RFCClient\RFCClient.csproj", "{3C05B803-EB4F-4CFF-97F4-C3A1AA4DC0B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{081F7F0C-0C6E-40F1-AECC-B3D1423B9381}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{081F7F0C-0C6E-40F1-AECC-B3D1423B9381}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{081F7F0C-0C6E-40F1-AECC-B3D1423B9381}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C05B803-EB4F-4CFF-97F4-C3A1AA4DC0B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C05B803-EB4F-4CFF-97F4-C3A1AA4DC0B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C05B803-EB4F-4CFF-97F4-C3A1AA4DC0B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C05B803-EB4F-4CFF-97F4-C3A1AA4DC0B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
