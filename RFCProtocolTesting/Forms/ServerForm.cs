@@ -59,7 +59,7 @@ namespace RFCProtocolTesting.Forms
             }
             else
             {
-                if (textBox1.Text.All(c => c >= '0' && c <= '9'))
+                if ((textBox1.Text.All(c => c >= '0' && c <= '9')) && !String.IsNullOrWhiteSpace(textBox1.Text))
                 {
                     if (backgroundWorker1.IsBusy != true)
                     {
@@ -76,7 +76,7 @@ namespace RFCProtocolTesting.Forms
 
         private void open_chat(object sender, EventArgs e)
         {
-            if (textBox1.Text.All(c => c >= '0' && c <= '9'))
+            if ((textBox1.Text.All(c => c >= '0' && c <= '9')) && !String.IsNullOrWhiteSpace(textBox1.Text))
             {
                 int port = int.Parse(textBox1.Text);
                 ChatForm childForm = new ChatForm(port);

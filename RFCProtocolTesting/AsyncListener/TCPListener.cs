@@ -13,13 +13,19 @@ namespace RFCProtocolTesting.AsyncListener
     public class TCPListener
     {
         public static ManualResetEvent allDone = new ManualResetEvent(false);
+
         public static bool listening = true;
         private static bool dataReady = false;
+        private static bool singleChat = false;
         private Socket listener;
         private static string[] dataForUI;
         private readonly object dataLock = new object();
 
         public TCPListener() { }
+        public TCPListener(bool isChat)
+        {
+            singleChat = isChat;
+        }
 
         public void StopListening()
         {
@@ -81,7 +87,10 @@ namespace RFCProtocolTesting.AsyncListener
 
         public static void AcceptCallback(IAsyncResult ar)
         { 
-            allDone.Set();
+            if (!singleChat)
+            {
+                allDone.Set();
+            }
             if (listening == false) return;
 
             Socket listener = (Socket)ar.AsyncState;
