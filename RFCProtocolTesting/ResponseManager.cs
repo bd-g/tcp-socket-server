@@ -43,6 +43,9 @@ namespace RFCProtocolTesting
                         byteData = Encoding.ASCII.GetBytes("File not found or invalid path");
                         return byteData;
                     }
+                case ResponseSetting.XML:
+                    byteData = Encoding.ASCII.GetBytes(body);
+                    return byteData;
                 default:
                     return byteData;
             }

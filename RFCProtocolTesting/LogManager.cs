@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SQLite;
 
 namespace RFCProtocolTesting
 {
@@ -15,6 +16,7 @@ namespace RFCProtocolTesting
         }
 
         public bool writeToLogFile = false;
+        public bool writeToSQL = false;
         static object locker = new object();
 
         public async Task logMessage(string body)
@@ -49,6 +51,41 @@ namespace RFCProtocolTesting
                     await Task.Delay(5);
                 }
                 stopwatch.Stop();
+            }
+
+            if (writeToSQL)
+            {
+                try
+                {
+                    string db = @"URI=file:C:\Users\bgeorge\source\repos\RFCProtocolTesting\RFCProtocolTesting\Logging\serverLog.db";
+
+                    using (var con = new SQLiteConnection(db))
+                    {
+                        con.Open();
+
+                        using (var cmd = new SQLiteCommand(con))
+                        {
+
+                            cmd.CommandText = "INSERT INTO FRCLog(logTime, message) VALUES('" + DateTime.Now.ToString() + "','" + body.Replace("'", "\"") + "')";
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    lock (locker)
+                    {
+                        StringBuilder log = new StringBuilder();
+                        log.Append(DateTime.Now.ToString());
+                        log.Append(" --- ");
+                        log.Append(e.ToString());
+                        log.Append(Environment.NewLine);
+                        log.Append(body);
+                        log.Append(Environment.NewLine);
+                        File.AppendAllText("C:\\Users\\bgeorge\\source\\repos\\RFCProtocolTesting\\RFCProtocolTesting\\Logging\\server.log", log.ToString());
+                    }
+                }
+
             }
         }
 

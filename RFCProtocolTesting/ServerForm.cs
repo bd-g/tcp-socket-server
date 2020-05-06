@@ -16,13 +16,15 @@ namespace RFCProtocolTesting
     {
         Echo = 1,
         Static = 2, 
-        File = 3
+        File = 3,
+        XML = 4
     }
     public partial class ServerForm : Form
     {
         private bool isListening;
         private TCPListener tCPListener;
         private ConnectionCounter connectionCounter;
+        static object locker = new object();
 
         public ServerForm()
         {
@@ -87,6 +89,7 @@ namespace RFCProtocolTesting
         {
             BackgroundWorker worker = sender as BackgroundWorker;
 
+
             while (!backgroundWorker1.CancellationPending)
             {
                 Int32 port = int.Parse(e.Argument.ToString());
@@ -122,6 +125,11 @@ namespace RFCProtocolTesting
             }
         }
 
+        private void PopulateTreeView(List<object> xmlList)
+        {
+            
+        }
+
         // This event handler deals with the results of the background operation.
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -134,8 +142,9 @@ namespace RFCProtocolTesting
         private void responseSettingChanged(object sender, EventArgs e)
         {
             ResponseSetting currentSetting = (radioButton1.Checked) ? ResponseSetting.Echo :
-                                                                          radioButton2.Checked ? ResponseSetting.Static :
-                                                                                                 ResponseSetting.File;
+                                                                      radioButton2.Checked ? ResponseSetting.Static :
+                                                                                             radioButton3.Checked ? ResponseSetting.File :
+                                                                                             ResponseSetting.XML;
             ResponseManager.Instance.responseSetting = currentSetting;
 
             if (radioButton2.Checked)
@@ -155,7 +164,18 @@ namespace RFCProtocolTesting
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            LogManager.Instance.writeToLogFile = ((CheckBox)sender).Checked;
+            lock (locker)
+            {
+                LogManager.Instance.writeToLogFile = ((CheckBox)sender).Checked;
+            }
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            lock (locker)
+            {
+                LogManager.Instance.writeToSQL = ((CheckBox)sender).Checked;
+            }
         }
     }
 }

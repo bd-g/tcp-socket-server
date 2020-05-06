@@ -15,6 +15,7 @@ namespace RFCProtocolTesting
         public static ManualResetEvent allDone = new ManualResetEvent(false);
         public static bool listening = true;
         private static bool dataReady = false;
+        private static bool bodyReady = false;
         private Socket listener;
         private static string connection = "";
         private readonly object dataLock = new object();
@@ -101,26 +102,31 @@ namespace RFCProtocolTesting
             StateObject state = (StateObject)ar.AsyncState;
             Socket handler = state.workSocket;
 
+            int bytesRead = handler.EndReceive(ar);
+
             connection = IPAddress.Parse(((IPEndPoint)handler.RemoteEndPoint).Address.ToString()) + Environment.NewLine +
                 "Port " + ((IPEndPoint)handler.RemoteEndPoint).Port;
             dataReady = true;
-
-            int bytesRead = handler.EndReceive(ar);
-
+            string body;
 
             if (bytesRead > 0)
-            { 
+            {
                 state.sb.Append(Encoding.ASCII.GetString(
                     state.buffer, 0, bytesRead));
 
                 content = state.sb.ToString();
-                string body = new HttpParser().getBody(content);
-                byte[] response = ResponseManager.Instance.getResponse(body);
-                
-                Send(handler, response);
-
-                await LogManager.Instance.logMessage(body);
+                body = new HttpParser().getBody(content);
             }
+            else
+            {
+                body = "";
+            }
+            
+            byte[] response = ResponseManager.Instance.getResponse(body);
+
+            Send(handler, response);
+
+            await LogManager.Instance.logMessage(body);
         }
 
         private static void Send(Socket handler, byte[] byteData)
