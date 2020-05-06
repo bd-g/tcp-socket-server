@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RFCProtocolTesting
+namespace RFCProtocolTesting.AsyncListener
 {
     public class StateObject
     {

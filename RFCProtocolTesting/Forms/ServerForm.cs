@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
-using System.Xml.Linq;
 
-namespace RFCProtocolTesting
+using RFCProtocolTesting.Tools;
+using RFCProtocolTesting.SettingManager;
+using RFCProtocolTesting.AsyncListener;
+
+namespace RFCProtocolTesting.Forms
 {
     public enum ResponseSetting
     {
@@ -32,7 +28,6 @@ namespace RFCProtocolTesting
         {
             InitializeComponent();
             isListening = false;
-            //textBox1.KeyPress += new KeyPressEventHandler(textBox1_KeyPress);
             connectionCounter = new ConnectionCounter();
 
             backgroundWorker1.WorkerReportsProgress = true;
@@ -42,7 +37,7 @@ namespace RFCProtocolTesting
             backgroundWorker1.RunWorkerCompleted += backgroundWorker1_RunWorkerCompleted;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void listen_click(object sender, EventArgs e)
         {
             button1.Enabled = false;
             if (isListening)
@@ -74,18 +69,24 @@ namespace RFCProtocolTesting
                 else
                 {
                     MessageBox.Show("Enter a valid port number");
-                    button1.Enabled = false;
+                    button1.Enabled = true;
                 }
             }
         }
 
-     
-        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        private void open_chat(object sender, EventArgs e)
         {
-            e.Handled = !char.IsDigit(e.KeyChar);
+            if (textBox1.Text.All(c => c >= '0' && c <= '9'))
+            {
+                int port = int.Parse(textBox1.Text);
+                ChatForm childForm = new ChatForm(port);
+                childForm.ShowDialog(this);
+            }
+            else
+            {
+                MessageBox.Show("Enter a valid port number");
+            }
         }
-
-     
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -185,10 +186,11 @@ namespace RFCProtocolTesting
 
         private void responseSettingChanged(object sender, EventArgs e)
         {
-            ResponseSetting currentSetting = (radioButton1.Checked) ? ResponseSetting.Echo :
-                                                                      radioButton2.Checked ? ResponseSetting.Static :
-                                                                                             radioButton3.Checked ? ResponseSetting.File :
-                                                                                             ResponseSetting.XML;
+            ResponseSetting currentSetting = radioButton1.Checked ? ResponseSetting.Echo :
+                                             radioButton2.Checked ? ResponseSetting.Static :
+                                             radioButton3.Checked ? ResponseSetting.File :
+                                                                    ResponseSetting.XML;
+
             ResponseManager.Instance.responseSetting = currentSetting;
 
             if (radioButton2.Checked)

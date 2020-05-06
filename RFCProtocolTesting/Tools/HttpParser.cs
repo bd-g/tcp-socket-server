@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 
-namespace RFCProtocolTesting
+namespace RFCProtocolTesting.Tools
 {
     class HttpParser : IHttpRequestLineHandler, IHttpHeadersHandler
     {

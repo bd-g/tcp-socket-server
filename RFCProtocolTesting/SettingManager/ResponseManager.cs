@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RFCProtocolTesting
+using RFCProtocolTesting.Forms;
+
+namespace RFCProtocolTesting.SettingManager
 {
     public sealed class ResponseManager
     {
