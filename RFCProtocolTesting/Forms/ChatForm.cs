@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using RFCProtocolTesting.AsyncListener;
+using RFCProtocolTesting.Tools;
 
 namespace RFCProtocolTesting.Forms
 {
@@ -38,6 +39,17 @@ namespace RFCProtocolTesting.Forms
             backgroundWorker1.RunWorkerAsync(portAndListenerAndReply);
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (!backgroundWorker1.IsBusy)
+            {
+                textBox1.Text = string.Empty;
+            }
+            else
+            {
+                AutoClosingMessageBox.Show("Wait for Reply", "Client has not returned a reply yet", 2000);
+            }
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -45,7 +57,6 @@ namespace RFCProtocolTesting.Forms
             chatListener.StopListening();
             this.Close();
         }
-
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -77,7 +88,6 @@ namespace RFCProtocolTesting.Forms
             closePending = false;
         }
 
-
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             if (backgroundWorker1.IsBusy)
@@ -90,11 +100,6 @@ namespace RFCProtocolTesting.Forms
                 return;
             }
             base.OnFormClosing(e);
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            textBox1.Text = string.Empty;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)

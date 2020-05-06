@@ -68,7 +68,7 @@ namespace RFCProtocolTesting.Forms
                 }
                 else
                 {
-                    MessageBox.Show("Enter a valid port number");
+                    AutoClosingMessageBox.Show("Enter a valid port number", "Invalid Port", 3500);
                     button1.Enabled = true;
                 }
             }
@@ -84,7 +84,7 @@ namespace RFCProtocolTesting.Forms
             }
             else
             {
-                MessageBox.Show("Enter a valid port number");
+                AutoClosingMessageBox.Show("Enter a valid port number", "Invalid Port", 3500);
             }
         }
 

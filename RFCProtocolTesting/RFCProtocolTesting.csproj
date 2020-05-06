@@ -146,6 +146,7 @@
     <Compile Include="Forms\ChatForm.Designer.cs">
       <DependentUpon>ChatForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\AutoClosingMessageBox.cs" />
     <Compile Include="Tools\ConnectionCounter.cs" />
     <Compile Include="SettingManager\LogManager.cs" />
     <Compile Include="Forms\ServerForm.cs">
