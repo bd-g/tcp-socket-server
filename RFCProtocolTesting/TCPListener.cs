@@ -15,9 +15,8 @@ namespace RFCProtocolTesting
         public static ManualResetEvent allDone = new ManualResetEvent(false);
         public static bool listening = true;
         private static bool dataReady = false;
-        private static bool bodyReady = false;
         private Socket listener;
-        private static string connection = "";
+        private static string[] dataForUI;
         private readonly object dataLock = new object();
 
         public TCPListener() { }
@@ -28,7 +27,7 @@ namespace RFCProtocolTesting
             allDone.Set();
         }
 
-        public IEnumerable<string> Listen(int port)
+        public IEnumerable<string[]> Listen(int port)
         {
             listening = true;
             IPAddress localAddr = IPAddress.Parse("127.0.0.1");
@@ -67,7 +66,7 @@ namespace RFCProtocolTesting
                     lock (dataLock)
                     {
                         while (!dataReady) { }
-                        yield return connection;
+                        yield return dataForUI;
                         dataReady = false;
                     }
                     
@@ -104,9 +103,6 @@ namespace RFCProtocolTesting
 
             int bytesRead = handler.EndReceive(ar);
 
-            connection = IPAddress.Parse(((IPEndPoint)handler.RemoteEndPoint).Address.ToString()) + Environment.NewLine +
-                "Port " + ((IPEndPoint)handler.RemoteEndPoint).Port;
-            dataReady = true;
             string body;
 
             if (bytesRead > 0)
@@ -121,7 +117,12 @@ namespace RFCProtocolTesting
             {
                 body = "";
             }
-            
+
+            string connection = IPAddress.Parse(((IPEndPoint)handler.RemoteEndPoint).Address.ToString()) + Environment.NewLine +
+                "Port " + ((IPEndPoint)handler.RemoteEndPoint).Port;
+            dataForUI = new string[] { connection, body };
+            dataReady = true;  
+
             byte[] response = ResponseManager.Instance.getResponse(body);
 
             Send(handler, response);

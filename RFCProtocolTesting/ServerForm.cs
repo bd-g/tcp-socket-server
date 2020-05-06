@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace RFCProtocolTesting
 {
@@ -97,9 +99,9 @@ namespace RFCProtocolTesting
                 tCPListener = new TCPListener();
 
                 var incomingConnections = tCPListener.Listen(port);
-                foreach (string connection in incomingConnections)
+                foreach (string[] dataForUI in incomingConnections)
                 {
-                    worker.ReportProgress(1, connection);
+                    worker.ReportProgress(1, dataForUI);
                 }
             }
         }
@@ -115,19 +117,61 @@ namespace RFCProtocolTesting
             }
             else
             {
-                textBox2.Text = e.UserState.ToString();
+                string[] dataForUI = e.UserState as string[];
+                textBox2.Text = dataForUI[0];
                 lock(connectionCounter)
                 {
                     label5.Text = connectionCounter.IncrementTotalCounter().ToString();
                     label6.Text = connectionCounter.IncrementCurrentCounter().ToString();
                 }
-                
+                if (radioButton4.Checked)
+                {
+                    XmlDocument xmlBody = new XmlDocument();
+                    try
+                    {
+                        xmlBody.LoadXml(dataForUI[1]);
+                        treeView1.Nodes.Clear();
+                        foreach (XmlNode child in xmlBody.DocumentElement)
+                        {
+                            TreeNode childNode = new TreeNode(child.Name);
+                            TreeNode created = treeView1.Nodes[treeView1.Nodes.Add(childNode)];
+                            if (child.HasChildNodes)
+                            {
+                                populateXMLTree(child, created);
+                            }
+                            else
+                            {
+                                created.Text += " - " + child.Value;
+                            }
+                        }
+                    }
+                    catch (XmlException)
+                    {
+                        treeView1.Nodes.Clear();
+                        treeView1.Nodes.Add("Invalid XML Format");
+                    }
+                }
             }
         }
 
-        private void PopulateTreeView(List<object> xmlList)
+        private void populateXMLTree(XmlNode parentNode, TreeNode treeNode)
         {
-            
+            foreach (XmlNode child in parentNode)
+            {
+                TreeNode childNode = new TreeNode(child.Name);
+                TreeNode created = treeNode.Nodes[treeNode.Nodes.Add(childNode)];
+                if (child.HasChildNodes)
+                {
+                    populateXMLTree(child, created);
+                }
+                else
+                {
+                    if (child.NodeType == XmlNodeType.Text)
+                    {
+                        created.Text = child.Value;
+                    }
+                }
+            }
         }
 
         // This event handler deals with the results of the background operation.
